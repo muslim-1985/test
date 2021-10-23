@@ -16,6 +16,18 @@ docker-ps:
 exec:
 	docker-compose exec app bash
 
+manager-test:
+	docker-compose run --rm app php bin/phpunit
+
+manager-test-coverage:
+	docker-compose run --rm app php bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage
+
+manager-test-unit:
+	docker-compose run --rm app php bin/phpunit --testsuite=unit
+
+manager-test-unit-coverage:
+	docker-compose run --rm app php bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage
+
 docker-up-test:
 #запускает указанный фаил
 	docker-compose -f docker-compose.production.yml up -d
@@ -68,9 +80,6 @@ manager-ready:
 manager-assets-dev:
 	docker-compose run --rm manager-node npm run dev
 
-manager-test:
-	docker-compose run --rm app php bin/phpunit
-
 describe:
 	cubectl describe po #показывает что твориться в кластере
 
@@ -79,15 +88,6 @@ getpod:
 
 del:
 	cubectl delete po my-pod #удаляет выбранный под
-
-manager-test-coverage:
-	docker-compose run --rm app php bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage
-
-manager-test-unit:
-	docker-compose run --rm app php bin/phpunit --testsuite=unit
-
-manager-test-unit-coverage:
-	docker-compose run --rm app php bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage
 
 build-production:
 	docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG} manager
