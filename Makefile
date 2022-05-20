@@ -81,14 +81,22 @@ manager-assets-dev:
 	docker-compose run --rm manager-node npm run dev
 
 describe:
-	cubectl describe po #показывает что твориться в кластере
+	kubectl describe po #показывает что твориться в кластере
 
 getpod:
-	cubectl get po #выводит все поды
+	kubectl get po #выводит все поды
 
 del:
-	cubectl delete po my-pod #удаляет выбранный под
+	kubectl delete po my-pod #удаляет выбранный под
 
+del-deploy:
+	kubectl delete deploy my-deployment
+
+create:
+	kubectl create -f deployment.yml
+
+check:
+	kubectl get po -w
 build-production:
 	docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG} manager
 	docker build --pull --file=manager/docker/production/php-fpm.docker --tag ${REGISTRY_ADDRESS}/manager-php-fpm:${IMAGE_TAG} manager

@@ -21,34 +21,5 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
-        tags: [ 'controller.service_arguments' ]
-
-    App\EventListener\Exceptions\ExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    App\ErrorHandling\Api\Serializer\FormExceptionNormalizer:
-        tags: [ 'serializer.normalizer' ]
-
-
-    App\ErrorHandling\Api\Serializer\NormalizerFactory:
-        arguments: [ !tagged serializer.normalizer ]
-        public: true
-
-    App\EventListener\User\CustomListener:
-        tags:
-            - { name: kernel.event_listener, event: custom.event, method: onCustomEvent }
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-#    Finesse\SwiftMailerDefaultsPlugin\SwiftMailerDefaultsPlugin:
-#        arguments:
-#            $defaults:
-#                from:
-#                    '%env(MAILER_FROM_EMAIL)%': '%env(MAILER_FROM_NAME)%'
-#        tags:
-#            - { name: swiftmailer.default.plugin }

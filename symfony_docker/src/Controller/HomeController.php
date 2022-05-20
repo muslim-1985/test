@@ -1,30 +1,29 @@
 <?php
+
+
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class HomeController
+class HomeController extends AbstractController
 {
-    /**
-     * @Route ("/home")
-     */
-    public function index(): Response
-    {
-        $number = random_int(0, 100);
 
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
-        );
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator
+    ){
     }
-
     /**
-     * @Route ("/mus")
+     * @Route ("v1/home", name="auth.signup", methods={"GET"})
      */
-    public function mus(): Response
+    public function ret(): Response
     {
-        return new Response(
-            '<html><body>Akim </body></html>'
-        );
+        return $this->json([], 201);
     }
 }

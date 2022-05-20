@@ -18,6 +18,10 @@ services:
       - ./symfony_docker:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    depends_on:
+      - db
+    links:
+      - db
     networks:
       - app-network
 
@@ -36,24 +40,38 @@ services:
     networks:
       - app-network
 
-  #MySQL Service
+#  #MySQL Service
   db:
-    image: mariadb:10.5.8
+    image: postgres:14.1
     container_name: db
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_DATABASE: symfony
-      MYSQL_ROOT_PASSWORD: 12345678
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: symfony
     volumes:
-      - dbdata:/var/lib/mysql/
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - dbdata:/var/lib/postgresql/data
     networks:
       - app-network
+
+#  mongo:
+#    image: mongo
+#    container_name: mongo
+#    restart: unless-stopped
+#    command: mongod --bind_ip 0.0.0.0
+#    volumes:
+#      - mongo:/data/db
+#    ports:
+#      - "27017:27017"
+#    environment:
+#      MONGO_INITDB_ROOT_DATABASE: local
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+#    networks:
+#      - app-network
 
   mailer:
     image: mailhog/mailhog
