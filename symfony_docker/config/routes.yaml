@@ -1,0 +1,10 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+user_controllers:
+    resource: ../src/User/Controller
+    type: annotation
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
