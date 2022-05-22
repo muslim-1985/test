@@ -1,20 +1,21 @@
 
 ###> symfony/framework-bundle ###
-/.env.local
+/symfony_docker/.env
 /.env.local.php
 /.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
+/symfony_docker/config/secrets/prod/prod.decrypt.private.php
+/symfony_docker/public/bundles/
+/symfony_docker/var/
+/symfony_docker/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
+/.idea
 ###< symfony/phpunit-bridge ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
+/symfony_docker/phpunit.xml
+/symfony_docker/.phpunit.result.cache
 ###< phpunit/phpunit ###
