@@ -22,3 +22,32 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    check_sql.connection:
+        class: App\User\Model\Service\CheckConnection
+        autowire: false
+        arguments:
+            - '@App\User\Model\Service\SqlDatabaseConnection'
+
+    check_mongo.connection:
+        class: App\User\Model\Service\CheckConnection
+        autowire: false
+        arguments:
+            - '@App\User\Model\Service\MongoDbConnection'
+
+    check_redis.connection:
+        class: App\User\Model\Service\CheckConnection
+        autowire: false
+        arguments:
+            - '@App\User\Model\Service\RedisConnection'
+
+    App\User\Model\Service\RedisConnection:
+        arguments:
+            - '@check_mongo.connection'
+
+    App\User\Model\Service\MongoDbConnection:
+        arguments:
+            - '@check_sql.connection'
+
+
+    App\User\Model\Service\CheckConnection: '@check_redis.connection'
