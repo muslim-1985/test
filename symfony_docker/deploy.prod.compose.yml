@@ -1,0 +1,51 @@
+version: '3'
+services:
+  app:
+    image: akimmalidocker/shop:latest
+    container_name: app
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    tty: true
+    networks:
+      - app-network
+
+  webserver:
+    image: akimmalidocker/nginx:latest
+    container_name: webserver
+    restart: always
+    volumes:
+      - ./work/www:/var/www
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+      - "443:443"
+    networks:
+      - app-network
+
+  db:
+    image: postgres:14.1-alpine
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: goland
+      POSTGRES_PASSWORD: goland
+      POSTGRES_DB: goland
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
