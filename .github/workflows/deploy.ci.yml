@@ -16,7 +16,7 @@ jobs:
           php-version: '8.1.2'
 
       - name: Install Dependencies
-        working-directory: "example-app"
+        working-directory: "symfony-docker"
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
@@ -47,22 +47,22 @@ jobs:
           push: true
           tags: akimmalidocker/nginx:latest
 
-  deploy_to_server:
-    needs: docker_build
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SHOP_SERVER }}
-          port: ${{ secrets.PORT }}
-          script: |
-            docker-compose stop
-            docker-compose rm -f
-            docker-compose pull
-            docker-compose up --build -d
-            docker-compose run --rm -w /var/www/example-app app php artisan migrate
-            docker cp app:/var/www  work
+#  deploy_to_server:
+#    needs: docker_build
+#    name: Deploy
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: executing remote ssh commands using ssh key
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          key: ${{ secrets.SHOP_SERVER }}
+#          port: ${{ secrets.PORT }}
+#          script: |
+#            docker-compose stop
+#            docker-compose rm -f
+#            docker-compose pull
+#            docker-compose up --build -d
+#            docker-compose run --rm -w /var/www/example-app app php artisan migrate
+#            docker cp app:/var/www  work
